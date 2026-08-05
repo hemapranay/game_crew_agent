@@ -1,65 +1,113 @@
-🤖 Agentic RAG Academic Intelligence System
+<div align="center">
 
-An Agentic AI-powered academic assistant that combines Retrieval-Augmented Generation (RAG), LLM-powered tool calling, and semantic search to answer complex academic queries using both structured student datasets and unstructured institutional policy documents.
+# 🎮 Game Crew Agent
 
-Unlike traditional RAG chatbots, this project enables an AI agent to reason, choose the appropriate tools, retrieve relevant information from multiple knowledge sources, and generate grounded, context-aware responses. The system dynamically invokes specialized tools to access student records, attendance, assessments, courses, mentors, and institutional policies before synthesizing accurate answers using Large Language Models.
+**A multi-agent AI system that writes playable games from a single sentence.**
 
-The retrieval pipeline is powered by FAISS vector search and Google Gemini embeddings, allowing efficient semantic search over policy documents. Structured information is retrieved through custom-built tools, enabling the agent to perform multi-step reasoning across heterogeneous data sources while minimizing hallucinations through retrieval-based grounding.
+Describe a game idea in plain English — a team of AI agents designs it, codes it in Pygame, and reviews it before handing you a ready-to-run file.
 
-This project was developed as part of a Kaggle AI competition to demonstrate modern Agentic AI, RAG, and LLM orchestration techniques for building intelligent decision-support systems.
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+[![CrewAI](https://img.shields.io/badge/Framework-CrewAI-orange.svg)](https://www.crewai.com/)
+[![Streamlit](https://img.shields.io/badge/Demo-Streamlit-FF4B4B.svg)](https://streamlit.io/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-✨ Features
-🤖 Agentic AI with autonomous decision making
-🔧 LLM-powered Tool Calling
-📚 Retrieval-Augmented Generation (RAG)
-🔍 FAISS-based semantic vector search
-📄 Policy document retrieval using embeddings
-📊 Structured student data retrieval
-🧠 Multi-step reasoning across multiple data sources
-💬 Context-aware response generation
-🎯 Prompt engineering for grounded and explainable outputs
-📈 Automated evaluation and competition submission generation
-🛠️ Tech Stack
-Programming Language: Python
-LLM: Groq (Llama 3.1) / Google Gemini
-Framework: LangChain
-Embeddings: Google Gemini Embeddings
-Vector Database: FAISS
-Data Processing: Pandas
-AI Concepts: Agentic AI, Tool Calling, RAG, Prompt Engineering, Semantic Search
-🏗️ Architecture
-                    User Query
-                        │
-                        ▼
-                 Agent Controller
-                        │
-         ┌──────────────┼──────────────┐
-         │              │              │
-         ▼              ▼              ▼
-  Student Tool   Attendance Tool   Policy Tool
-         │              │              │
-         └──────────────┼──────────────┘
-                        ▼
-                 FAISS Vector Search
-                        │
-                        ▼
-              Google Gemini Embeddings
-                        │
-                        ▼
-                 Groq Llama 3.1 LLM
-                        │
-                        ▼
-              Grounded AI Response
-🚀 Future Improvements
-Deploy with FastAPI + Streamlit
-Docker support
-Conversation memory
-Multi-agent workflow using CrewAI/LangGraph
-AWS deployment (S3, Lambda, ECS)
-CI/CD with GitHub Actions
-Authentication and user management
-Real-time analytics dashboard
+[**🚀 Live Demo**](#) &nbsp;•&nbsp; [**📓 Original Notebook**](Copy_of_game_crew.ipynb) &nbsp;•&nbsp; [**🎥 Video Walkthrough**](#)
 
-I also noticed from the notebook that you're using CrewAI packages (crewai and crewai[google-genai]) in addition to your RAG pipeline. If your project actually uses CrewAI agents (not just installs the library), we should mention that prominently because CrewAI is a strong keyword for AI Software Engineer roles.
+</div>
 
-If that's the case, I can help you write a top-tier README with badges, architecture diagrams, screenshots, installation instructions, and documentation that looks like a professional open-source AI project.
+---
+
+## What it does
+
+Most "AI game generator" demos are a single prompt-to-code call. **Game Crew Agent** instead models how a real small studio works: three specialized agents hand work off to each other, each one focused on a single responsibility, with the later agents grounded in the earlier agents' output.
+
+| Agent | Role | Output |
+|---|---|---|
+| 🎨 **Creative Game Designer** | Expands a rough idea into a real design, with web search for inspiration | Game Design Document |
+| 💻 **Senior Python Game Developer** | Implements the design as a working Pygame script | First-draft `.py` game |
+| 🔍 **QA Engineer & Reviewer** | Checks the code for bugs, missing features, and playability | Final, polished `.py` game |
+"a game where you dodge falling meteors"
+                                   │
+                                   ▼
+                    ┌─────────────────────────────┐
+                    │   🎨 Game Designer Agent     │
+                    │   (+ web search for ideas)   │
+                    └──────────────┬───────────────┘
+                                   │  Game Design Document
+                                   ▼
+                    ┌─────────────────────────────┐
+                    │  💻 Python Developer Agent   │
+                    └──────────────┬───────────────┘
+                                   │  First-draft game.py
+                                   ▼
+                    ┌─────────────────────────────┐
+                    │   🔍 QA / Reviewer Agent     │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                      ✅ Final, runnable game.py
+                      Optionally, the original notebook takes this one step further: it builds the finished game for the **browser** using `pygbag` (Pygame → WASM) and exposes it through an `ngrok` tunnel, so it can be played instantly with no local install.
+
+## ✨ Features
+
+- 🤖 **Sequential multi-agent orchestration** with CrewAI — each agent's output becomes the next agent's grounded context
+- 🔍 **Web-search-augmented design** via Serper, so concepts aren't generated in a vacuum
+- 💻 **Complete, runnable code generation** — not snippets; a full `python game.py` you can play immediately
+- 🧪 **Built-in QA pass** — a dedicated review step catches bugs and missing features before the code ships
+- 🌐 **Browser build pipeline** (notebook) — Pygame → WASM via `pygbag`, tunneled live with `ngrok`
+- 🖥️ **Streamlit demo UI** — type an idea, watch each agent's output, download the final game
+
+## 🛠️ Tech Stack
+
+- **Orchestration:** [CrewAI](https://www.crewai.com/) (sequential multi-agent process)
+- **LLM:** Google Gemini 2.5 Flash
+- **Search tool:** Serper (web search grounding for the Designer agent)
+- **Game engine:** Pygame
+- **Browser build:** pygbag (Pygame-to-WASM) + ngrok (public tunnel)
+- **Demo UI:** Streamlit
+
+## 🚀 Getting Started
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/hemapranay/game_crew_agent.git
+cd game_crew_agent
+pip install -r requirements.txt
+```
+
+### 2. Get API keys
+
+- **Gemini** (required, free): [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+- **Serper** (optional, free tier): [serper.dev](https://serper.dev) — enables web search for the Designer agent
+
+### 3. Run the demo
+
+```bash
+streamlit run app.py
+```
+
+Enter your API key in the sidebar, describe a game idea, and click **Generate Game**. You'll get a design document, the final reviewed code, and a download button for the `.py` file.
+
+### Alternative: run the original notebook
+
+`Copy_of_game_crew.ipynb` runs the same agent pipeline in Colab and additionally builds the result into a browser-playable game via `pygbag` + `ngrok`.
+
+## 📁 Project Structure
+## 🗺️ Roadmap
+
+- [ ] One-click browser build from the Streamlit app (integrate the `pygbag` step)
+- [ ] Multi-turn iteration — refine a generated game with follow-up prompts
+- [ ] Support additional engines beyond Pygame
+- [ ] Dockerized deployment
+- [ ] Gallery of example generated games
+
+## 📄 License
+
+MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+Built by <a href="https://github.com/hemapranay">Hemapranay</a> · feedback and PRs welcome
+</div>
